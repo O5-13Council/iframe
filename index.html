@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Link Genreator</title>
+  </head>
+  <body>
+    <h1>Genreate Link <button onclick="make()"></button></h1>
+    <a id="src"></a>
+    <script>
+      var encrypt = (salt, me) => {
+        let text = me;
+        const textToChars = (text) => text.split("").map((c) => c.charCodeAt(0));
+        const byteHex = (n) => ("0" + Number(n).toString(16)).substr(-2);
+        const applySaltToChar = (code) => textToChars(salt).reduce((a, b) => a ^ b, code);
+      
+        return text
+          .split("")
+          .map(textToChars)
+          .map(applySaltToChar)
+          .map(byteHex)
+          .join("");
+      };
+      
+      var decrypt = (salt, encoded) => {
+        const textToChars = (text) => text.split("").map((c) => c.charCodeAt(0));
+        const applySaltToChar = (code) => textToChars(salt).reduce((a, b) => a ^ b, code);
+        return encoded
+          .match(/.{1,2}/g)
+          .map((hex) => parseInt(hex, 16))
+          .map(applySaltToChar)
+          .map((charCode) => String.fromCharCode(charCode))
+          .join("");
+      };
+
+      function generateRandomString(length, characters) {
+        let result = '';
+        for (let i = 0; i < length; i++) {
+          result += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        return result;
+      }
+      function make() {
+        const ses = ["*.sites.unknownios.space"]; 
+        let selectedLink;
+        const fin = ses.substring(2);
+        const s = fin.split(".")
+        const randomString = generateRandomString(12, "abcdefghijklmnopqrstuvwxyz0123456789");
+        const salt = s[s.length - 2]
+        const en = encrypt(salt, randomString)
+        selectedLink = `https://${randomString}.${fin}?code=${en}`
+        const src = document.getElementById('src')
+        src.href = selectedLink; src.innerHTML = `Link: ${selectedLink}`
+      }
+    </script>
+  </body>
+</html>
+    
