@@ -6,11 +6,12 @@
   </head>
   <body>
     <h1>Genreate Link <button onclick="make()">Create</button></h1>
-    <a id="src"></a>
+    <a id="src" onclick="window.open(link)></a>
     <script>
       javascript:(function () { var script = document.createElement('script'); script.src="//cdn.jsdelivr.net/npm/eruda"; document.body.appendChild(script); script.onload = function () { eruda.init() } })();
     </script>
     <script>
+      var link;
       var encrypt = (salt, me) => {
         let text = me;
         const textToChars = (text) => text.split("").map((c) => c.charCodeAt(0));
@@ -53,7 +54,7 @@
         const en = encrypt(salt, randomString)
         selectedLink = `https://${randomString}.${fin}?code=${en}`
         const src = document.getElementById('src')
-        src.href = selectedLink; src.innerHTML = `Link: ${selectedLink}`
+        link = selectedLink; src.innerHTML = `Link: ${selectedLink}`
       }
     </script>
   </body>
