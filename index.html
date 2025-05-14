@@ -1,43 +1,52 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Link Genreator</title>
+    <title>Link Generator</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
   </head>
   <body>
-    <h1>Genreate Link <button onclick="make()">Create</button></h1>
-    <a id="src" onclick="window.open(link)"></a><br>
-    <a>v1.0.1</a>
+    <h1>Generate Link <button onclick="make()">Create</button></h1>
+    <a id="src" href="#" target="_blank" rel="noopener noreferrer">Link will appear here</a><br>
+    <a>v1.0.2</a>
+
+    <!-- Eruda Debug Console -->
     <script>
-      javascript:(function () { var script = document.createElement('script'); script.src="https://cdn.jsdelivr.net/npm/eruda"; document.body.appendChild(script); script.onload = function () { eruda.init() } })();
+      (function () {
+        var script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/npm/eruda";
+        document.body.appendChild(script);
+        script.onload = function () {
+          eruda.init();
+        };
+      })();
     </script>
+
+    <!-- Main Logic -->
     <script>
-      var link;
-      function open() {
-        window.open(link)
-        }
-      var encrypt = (salt, me) => {
-        let text = me;
-        const textToChars = (text) => text.split("").map((c) => c.charCodeAt(0));
-        const byteHex = (n) => ("0" + Number(n).toString(16)).substr(-2);
-        const applySaltToChar = (code) => textToChars(salt).reduce((a, b) => a ^ b, code);
-      
-        return text
+      let link;
+
+      const encrypt = (salt, me) => {
+        const textToChars = text => text.split("").map(c => c.charCodeAt(0));
+        const byteHex = n => ("0" + Number(n).toString(16)).substr(-2);
+        const applySaltToChar = code => textToChars(salt).reduce((a, b) => a ^ b, code);
+
+        return me
           .split("")
           .map(textToChars)
           .map(applySaltToChar)
           .map(byteHex)
           .join("");
       };
-      
-      var decrypt = (salt, encoded) => {
-        const textToChars = (text) => text.split("").map((c) => c.charCodeAt(0));
-        const applySaltToChar = (code) => textToChars(salt).reduce((a, b) => a ^ b, code);
+
+      const decrypt = (salt, encoded) => {
+        const textToChars = text => text.split("").map(c => c.charCodeAt(0));
+        const applySaltToChar = code => textToChars(salt).reduce((a, b) => a ^ b, code);
+
         return encoded
           .match(/.{1,2}/g)
-          .map((hex) => parseInt(hex, 16))
+          .map(hex => parseInt(hex, 16))
           .map(applySaltToChar)
-          .map((charCode) => String.fromCharCode(charCode))
+          .map(charCode => String.fromCharCode(charCode))
           .join("");
       };
 
@@ -48,19 +57,21 @@
         }
         return result;
       }
+
       function make() {
-        const ses = ["*.sites.unknownios.space"]; 
-        let selectedLink;
+        const ses = ["*.sites.unknownios.space"];
         const fin = ses[0].substring(2);
-        const s = fin.split(".")
+        const parts = fin.split(".");
         const randomString = generateRandomString(12, "abcdefghijklmnopqrstuvwxyz0123456789");
-        const salt = s[s.length - 2]
-        const en = encrypt(salt, randomString)
-        selectedLink = `https://${randomString}.${fin}?code=${en}`
-        const src = document.getElementById('src')
-        link = selectedLink; src.innerHTML = `Link: ${selectedLink}`
+        const salt = parts[parts.length - 2];
+        const en = encrypt(salt, randomString);
+        const selectedLink = `https://${randomString}.${fin}?code=${en}`;
+        
+        const src = document.getElementById('src');
+        link = selectedLink;
+        src.href = selectedLink;
+        src.innerHTML = `Link: ${selectedLink}`;
       }
     </script>
   </body>
 </html>
-    
