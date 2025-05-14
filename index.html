@@ -6,7 +6,7 @@
   </head>
   <body>
     <h1>Genreate Link <button onclick="make()">Create</button></h1>
-    <a id="src" onclick="open()"></a>
+    <a id="src" onclick="window.open(link)"></a>
     <script>
       javascript:(function () { var script = document.createElement('script'); script.src="https://cdn.jsdelivr.net/npm/eruda"; document.body.appendChild(script); script.onload = function () { eruda.init() } })();
     </script>
