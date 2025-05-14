@@ -6,12 +6,15 @@
   </head>
   <body>
     <h1>Genreate Link <button onclick="make()">Create</button></h1>
-    <a id="src" onclick="window.open(link)></a>
+    <a id="src" onclick="open()></a>
     <script>
       javascript:(function () { var script = document.createElement('script'); script.src="//cdn.jsdelivr.net/npm/eruda"; document.body.appendChild(script); script.onload = function () { eruda.init() } })();
     </script>
     <script>
       var link;
+      function open() {
+        window.open(link)
+        }
       var encrypt = (salt, me) => {
         let text = me;
         const textToChars = (text) => text.split("").map((c) => c.charCodeAt(0));
