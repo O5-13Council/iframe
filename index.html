@@ -45,7 +45,7 @@
       function make() {
         const ses = ["*.sites.unknownios.space"]; 
         let selectedLink;
-        const fin = ses.substring(2);
+        const fin = ses[0].substring(2);
         const s = fin.split(".")
         const randomString = generateRandomString(12, "abcdefghijklmnopqrstuvwxyz0123456789");
         const salt = s[s.length - 2]
